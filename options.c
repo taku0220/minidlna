@@ -74,6 +74,7 @@ static const struct {
 	{ THUMB_QUALITY, "thumbnail_quality" },
 	{ ENABLE_THUMB_FILMSTRIP, "enable_thumbnail_filmstrip" },
 #endif
+	{ RESIZE_COVER_ART, "resize_covers" },
 };
 
 int

@@ -67,6 +67,7 @@ enum upnpconfigoptions {
 	THUMB_QUALITY,			/* thumnail image quality */
 	ENABLE_THUMB_FILMSTRIP,		/* film strip overlay */
 #endif
+	RESIZE_COVER_ART,		/* resize cover art to comply with DLNA spec */
 };
 
 /* readoptionsfile()
