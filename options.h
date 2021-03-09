@@ -57,18 +57,16 @@ enum upnpconfigoptions {
 	USER_ACCOUNT,			/* user account to run as */
 	FORCE_SORT_CRITERIA,		/* force sorting by a given sort criteria */
 	MAX_CONNECTIONS,		/* maximum number of simultaneous connections */
-#ifndef THUMBNAIL_CREATION
 	MERGE_MEDIA_DIRS,		/* don't add an extra directory level when there are multiple media dirs */
-#else
-	MERGE_MEDIA_DIRS,		/* don't add an extra directory level when there are multiple media dirs */
-	ENABLE_THUMB,                   /* enable thumbnail generation */
-	THUMB_WIDTH,                    /* thunbnail image with */
-	THUMB_QUALITY,                  /* thumnail image quality */
-	ENABLE_THUMB_FILMSTRIP,         /* film strip overlay */
-#endif
 	WIDE_LINKS,			/* allow following symlinks outside the defined media_dirs */
 	TIVO_DISCOVERY,			/* TiVo discovery protocol: bonjour or beacon. Defaults to bonjour if supported */
 	ENABLE_SUBTITLES,		/* Enable generic subtitle support for all clients by default */
+#ifdef THUMBNAIL_CREATION
+	ENABLE_THUMB,			/* enable thumbnail generation */
+	THUMB_WIDTH,			/* thunbnail image with */
+	THUMB_QUALITY,			/* thumnail image quality */
+	ENABLE_THUMB_FILMSTRIP,		/* film strip overlay */
+#endif
 };
 
 /* readoptionsfile()

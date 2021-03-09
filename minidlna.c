@@ -822,7 +822,7 @@ init(int argc, char **argv)
 		case ENABLE_THUMB:
 			if( (strcmp(ary_options[i].value, "yes") == 0) || atoi(ary_options[i].value) )
 				SETFLAG(THUMB_MASK);
-		break;
+			break;
 		case THUMB_WIDTH:
 			runtime_vars.thumb_width = atoi(ary_options[i].value);
 			if (runtime_vars.thumb_width < 120)
@@ -836,11 +836,11 @@ init(int argc, char **argv)
 				runtime_vars.thumb_quality = 5;
 			if (runtime_vars.thumb_quality > 30)
 				runtime_vars.thumb_quality = 30;
-		break;
+			break;
 		case ENABLE_THUMB_FILMSTRIP:
 			if( (strcmp(ary_options[i].value, "yes") == 0) || atoi(ary_options[i].value) )
 				SETFLAG(THUMB_FILMSTRIP);
-		break;
+			break;
 #endif
 		default:
 			DPRINTF(E_ERROR, L_GENERAL, "Unknown option in file %s\n",
