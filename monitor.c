@@ -698,6 +698,12 @@ start_inotify(void)
 			buffer[BUF_LEN-1] = '\0';
 		}
 
+		if (GETFLAG(RESCAN_MASK))
+		{
+			DPRINTF(E_WARN, L_INOTIFY, "Ignoring inotify during rescan.\n");
+			continue;
+		}
+
 		i = 0;
 		while( !quitting && i < length )
 		{
@@ -713,6 +719,7 @@ start_inotify(void)
 				snprintf(path_buf, sizeof(path_buf), "%s/%s", get_path_from_wd(event->wd), event->name);
 				if ( event->mask & IN_ISDIR && (event->mask & (IN_CREATE|IN_MOVED_TO)) )
 				{
+					SETFLAG(MONITOR_MASK);
 					DPRINTF(E_DEBUG, L_INOTIFY,  "The directory %s was %s.\n",
 						path_buf, (event->mask & IN_MOVED_TO ? "moved here" : "created"));
 #ifdef THUMBNAIL_CREATION
@@ -726,12 +733,14 @@ start_inotify(void)
 					}
 #endif
 					monitor_insert_directory(pollfds[0].fd, esc_name, path_buf);
+					CLEARFLAG(MONITOR_MASK);
 				}
 				else if ( (event->mask & (IN_CLOSE_WRITE|IN_MOVED_TO|IN_CREATE)) &&
 				          (lstat(path_buf, &st) == 0) )
 				{
 					if( (event->mask & (IN_MOVED_TO|IN_CREATE)) && (S_ISLNK(st.st_mode) || st.st_nlink > 1) )
 					{
+						SETFLAG(MONITOR_MASK);
 						DPRINTF(E_DEBUG, L_INOTIFY, "The %s link %s was %s.\n",
 							(S_ISLNK(st.st_mode) ? "symbolic" : "hard"),
 							path_buf, (event->mask & IN_MOVED_TO ? "moved here" : "created"));
@@ -739,20 +748,24 @@ start_inotify(void)
 							monitor_insert_directory(pollfds[0].fd, esc_name, path_buf);
 						else
 							monitor_insert_file(esc_name, path_buf);
+						CLEARFLAG(MONITOR_MASK);
 					}
 					else if( event->mask & (IN_CLOSE_WRITE|IN_MOVED_TO) && st.st_size > 0 )
 					{
 						if( (event->mask & IN_MOVED_TO) ||
 						    (sql_get_int_field(db, "SELECT TIMESTAMP from DETAILS where PATH = '%q'", path_buf) != st.st_mtime) )
 						{
+							SETFLAG(MONITOR_MASK);
 							DPRINTF(E_DEBUG, L_INOTIFY, "The file %s was %s.\n",
 								path_buf, (event->mask & IN_MOVED_TO ? "moved here" : "changed"));
 							monitor_insert_file(esc_name, path_buf);
+							CLEARFLAG(MONITOR_MASK);
 						}
 					}
 				}
 				else if ( event->mask & (IN_DELETE|IN_MOVED_FROM) )
 				{
+					SETFLAG(MONITOR_MASK);
 					DPRINTF(E_DEBUG, L_INOTIFY, "The %s %s was %s.\n",
 						(event->mask & IN_ISDIR ? "directory" : "file"),
 						path_buf, (event->mask & IN_MOVED_FROM ? "moved away" : "deleted"));
@@ -771,6 +784,7 @@ start_inotify(void)
 #endif
 					else
 						monitor_remove_file(path_buf);
+					CLEARFLAG(MONITOR_MASK);
 				}
 				free(esc_name);
 			}
