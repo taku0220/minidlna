@@ -194,6 +194,10 @@ extern uint32_t runtime_flags;
 #define NO_PLAYLIST_MASK      0x0008
 #define SYSTEMD_MASK          0x0010
 #define MERGE_MEDIA_DIRS_MASK 0x0020
+#ifdef THUMBNAIL_CREATION
+#define THUMB_MASK            0x0040
+#define THUMB_FILMSTRIP       0x0080
+#endif
 #define WIDE_LINKS_MASK       0x0040
 #ifdef HAVE_AVAHI
 #define TIVO_BONJOUR_MASK     0x0080
