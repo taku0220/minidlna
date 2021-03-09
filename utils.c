@@ -514,7 +514,7 @@ resolve_unknown_type(const char * path, media_types dir_type)
 		else if( S_ISREG(entry.st_mode) )
 		{
 			media_types mtype = get_media_type(path);
-			if (dir_type & mtype)
+			if ((dir_type & mtype) || (mtype & TYPE_CAPTION))
 				type = TYPE_FILE;
 		}
 	}
