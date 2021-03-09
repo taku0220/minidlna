@@ -365,7 +365,6 @@ generate_thumbnail(const char * path)
 
 	if ( is_video(path) )
 	{
-
 		vt = video_thumbnailer_create();
 		if ( !vt )
 		{
@@ -374,7 +373,13 @@ generate_thumbnail(const char * path)
 		}
 		vt->thumbnail_image_type = Jpeg;
 		vt->thumbnail_image_quality = runtime_vars.thumb_quality;
+		/* 'thumbnail_size' is deprecated since v2.2.1.
+		   https://github.com/dirkvdb/ffmpegthumbnailer/commit/20dfac597669a6c653ed97dde28d946a5aee0bfb */
+#ifndef THUMBNAILER_OLD
+		video_thumbnailer_set_size(vt, runtime_vars.thumb_width, 0);
+#else
 		vt->thumbnail_size = runtime_vars.thumb_width;
+#endif
 		vt->seek_percentage = 20;
 		vt->overlay_film_strip = (GETFLAG(THUMB_FILMSTRIP))?1:0;
 

@@ -637,6 +637,8 @@ AC_ARG_ENABLE(thumbnail,
 		AC_DEFINE([THUMBNAIL_CREATION],[1],[Define to 1 if you want to enable video thumbnail generation])
 		PKG_CHECK_MODULES([LIBFFMPEGTHUMBNAILER], libffmpegthumbnailer, ,
 			AC_MSG_ERROR([Unable to find libffmpegthumbnailer]))
+		AC_SEARCH_LIBS([video_thumbnailer_set_size], [ffmpegthumbnailer], [],
+			[AC_DEFINE([THUMBNAILER_OLD],[1],[Define to 1 if have not video_thumbnailer_set_size function])])
 		AC_SUBST([LIBFFMPEGTHUMBNAILER_CFLAGS])
 		AC_SUBST([LIBFFMPEGTHUMBNAILER_LIBS])
         else
