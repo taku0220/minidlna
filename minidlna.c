@@ -1144,8 +1144,17 @@ main(int argc, char **argv)
 		if (!sqlite3_threadsafe() || sqlite3_libversion_number() < 3005001)
 			DPRINTF(E_ERROR, L_GENERAL, "SQLite library is not threadsafe!  "
 			                            "Inotify will be disabled.\n");
-		else if (pthread_create(&inotify_thread, NULL, start_inotify, NULL) != 0)
-			DPRINTF(E_FATAL, L_GENERAL, "ERROR: pthread_create() failed for start_inotify. EXITING\n");
+		else
+		{
+			pthread_attr_t attr, *attrptr = NULL;
+			if ((pthread_attr_init(&attr) == 0) && (pthread_attr_setstacksize(&attr, 192 * 1024) == 0))
+				attrptr = &attr;
+			else
+				DPRINTF(E_ERROR, L_GENERAL, "Failed to set inotify thread stack size,"
+							    "continuing with the default.\n");
+			if (pthread_create(&inotify_thread, attrptr, start_inotify, NULL) != 0)
+				DPRINTF(E_FATAL, L_GENERAL, "ERROR: pthread_create() failed for start_inotify. EXITING\n");
+		}
 	}
 #endif /* HAVE_INOTIFY */
 
