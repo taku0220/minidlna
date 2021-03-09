@@ -66,7 +66,6 @@ testupnpdescgen_LDADD = \
 	@LIBID3TAG_LIBS@ \
 	@LIBSQLITE3_LIBS@ \
 	@LIBAVFORMAT_LIBS@ \
-	@LIBAVUTIL_LIBS@ \
 	@LIBEXIF_LIBS@ \
 	-lFLAC $(flacogglibs) $(vorbislibs) $(avahilibs)
 
