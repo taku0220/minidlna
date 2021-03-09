@@ -535,6 +535,20 @@ valid_media_types(const char *path)
 	return ALL_MEDIA;
 }
 
+#ifdef THUMBNAIL_CREATION
+int
+rename_artcache_dir(const char * oldpath, const char * newpath)
+{
+	char old_artcache[PATH_MAX];
+	char new_artcache[PATH_MAX];
+
+	snprintf(old_artcache, sizeof(old_artcache), "%s/art_cache%s", db_path, oldpath);
+	snprintf(new_artcache, sizeof(old_artcache), "%s/art_cache%s", db_path, newpath);
+
+	return rename(old_artcache, new_artcache);
+}
+#endif
+
 /*
  * Add and subtract routines for timevals.
  * N.B.: subtract routine doesn't deal with
