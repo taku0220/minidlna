@@ -589,6 +589,7 @@ init(int argc, char **argv)
 	runtime_vars.max_connections = 50;
 	runtime_vars.root_container = NULL;
 	runtime_vars.ifaces[0] = NULL;
+	runtime_vars.cover_size = 160;		/* DLNA standart value */
 
 #ifdef THUMBNAIL_CREATION
 	runtime_vars.thumb_width = 160;
@@ -842,6 +843,9 @@ init(int argc, char **argv)
 				SETFLAG(THUMB_FILMSTRIP);
 			break;
 #endif
+		case RESIZE_COVER_ART:
+			runtime_vars.cover_size = atoi(ary_options[i].value);
+			break;
 		default:
 			DPRINTF(E_ERROR, L_GENERAL, "Unknown option in file %s\n",
 				optionsfile);
